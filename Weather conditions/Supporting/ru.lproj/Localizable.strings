@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  Weather conditions
+
+  Created by Лилия Андреева on 17.07.2024.
+  
+*/
+"Sunny" = "Солнечно";
+"Snow" = "Снег";
+"Rain" = "Дождь";
+"Cloudy" = "Облачно";
+"Rainy" = "Дождливо";
+"Windy" = "Ветренно";
+"Storm" = "Гроза";
+"Gray" = "Пасмурно";
