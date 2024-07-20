@@ -6,43 +6,61 @@
 //
 
 import UIKit
+protocol IMainViewController: AnyObject {
+	/// Метод отрисовки информации на экране
+	/// - Parameters: 
+	///   - viewData: данные для отрисовки на экране
+	func render(with cellModels: [CellModel])
+	/// Добавление анимации пульсации.
+	/// - Parameters:
+	///   - image: Изображение для анимации.
+	///   - layer: Слой, к которому будет добавлена анимация.
+	func showPulseAnimation(image: UIImage, layer: CALayer)
+	/// Метод для скрытия текущей анимации пульсации.
+	func hideCurrentPulseAnimation()
+}
 
 final class MainViewController: UIViewController {
+	
+	// MARK: - Dependencies
+	var presenter: IPresenter?
 
 	// MARK: - Private properties
-	private var cellItems: [CellModel] = []
+	/// Массив объектов CellModel, представляющих данные для ячеек.
+	var viewData: [CellModel] = []
+	/// Коллекция для отображения погодных условий.
 	private lazy var collectionView: UICollectionView = setupCollectionView()
+	/// Текущий слой анимации пульсации.
 	private var currentPulseLayer: CALayer?
 
 	// MARK: - Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupView()
+		presenter?.viewIsReady()
 		collectionView.dataSource = self
 		collectionView.delegate = self
-		changeRandomCell()
-
+		chooseRandomCell()
 	}
 }
 
 // MARK: - Settings View
 private extension MainViewController {
-
+	/// Метод для настройки предтавления супер вью
 	func setupView(){
 		view.backgroundColor = .white
 		addSubView()
 		setupLayout()
-		fetchCellData()
 	}
-
 }
 // MARK: - Settings
 private extension MainViewController {
-
+	/// Метод для добавления сабвью на супер вью
 	func addSubView(){
 		view.addSubview(collectionView)
 	}
 
+	/// Настройка коллекции.
 	func setupCollectionView() -> UICollectionView {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
@@ -57,35 +75,20 @@ private extension MainViewController {
 		return collectionView
 	}
 
-	func fetchCellData(){
-		cellItems = CellModel.fetchCell()
-	}
-
-	func addPulseAnimation(image: UIImage, layer: CALayer) {
-		let pulse = Pulse(
-			numberOfPulse: ConstantStrings.numberConstant.constantForAnimation.numberOfPulse,
-			radius: UIScreen.main.bounds.width,
-			position: CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2),
-			backgroundImage: image
-		)
-		pulse.animationDuration = ConstantStrings.numberConstant.constantForAnimation.animationDuration
-		self.view.layer.insertSublayer(pulse, below: layer)
-		currentPulseLayer = pulse
-	}
-
-	func changeRandomCell() {
-		if !cellItems.isEmpty {
-			let randomIndex = Int.random(in: 0..<cellItems.count)
-			let selectedCellModel = cellItems[randomIndex]
-			addPulseAnimation(image: selectedCellModel.image, layer: view.layer)
+	/// Выбор случайной ячейки для анимации пульсации.
+	func chooseRandomCell() {
+		if !viewData.isEmpty {
+			let randomIndex = Int.random(in: 0..<viewData.count)
+			let selectedCellModel = viewData[randomIndex]
+			showPulseAnimation(image: selectedCellModel.image, layer: view.layer)
 		}
 	}
 }
 
 
-
 // MARK: - Layout
 extension MainViewController {
+	/// Настройка констрейнтов для коллекции.
 	func setupLayout() {
 		collectionView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -99,7 +102,7 @@ extension MainViewController {
 	var quarterOfTheScreenWidth: Double {
 		return view.frame.width / 4.0
 	}
-	
+
 	var halfOfWidth: Double {
 		return view.frame.width / 2.0
 	}
@@ -109,7 +112,7 @@ extension MainViewController {
 extension MainViewController: UICollectionViewDataSource, UICollectionViewDelegate {
 
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		cellItems.count
+		viewData.count
 	}
 
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -118,7 +121,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 			for: indexPath
 		) as? CustomCollectionViewCell else { return UICollectionViewCell() }
 
-		let cellModel = cellItems[indexPath.row]
+		let cellModel = viewData[indexPath.row]
 		cell.configure(with: cellModel)
 
 		return cell
@@ -127,9 +130,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
 		guard let selectedCell = collectionView.cellForItem(at: indexPath) as? CustomCollectionViewCell else { return }
-		currentPulseLayer?.removeAllAnimations()
-		currentPulseLayer?.removeFromSuperlayer()
-		addPulseAnimation(image: selectedCell.imageView.image!, layer: selectedCell.layer)
+		presenter?.didCellSelected(at: indexPath, customCellLayer: selectedCell.layer)
 	}
 }
 
@@ -140,17 +141,13 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 		layout collectionViewLayout: UICollectionViewLayout,
 		sizeForItemAt indexPath: IndexPath
 	) -> CGSize {
+
 		let cellSpacing = Int(Sizes.Padding.half)
 		let cellsPerRow = ConstantStrings.numberConstant.cellPerRow
 		let itemWidth = (Int(collectionView.frame.width) - cellSpacing * (cellsPerRow - 1)) / cellsPerRow
 		let itemHeight = Int(collectionView.frame.height)
 
 		return CGSize(width: itemWidth, height: itemHeight)
-	}
-
-	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, 
-						minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-		Sizes.Padding.half
 	}
 
 	func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout,
@@ -161,5 +158,29 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 			bottom: ConstantStrings.numberConstant.zero,
 			right: Sizes.Padding.half
 		)
+	}
+}
+
+extension MainViewController: IMainViewController {
+	func render(with cellModels: [CellModel]) {
+		self.viewData = cellModels
+		collectionView.reloadData()
+	}
+
+	func showPulseAnimation(image: UIImage, layer: CALayer) {
+		let pulse = Pulse(
+			numberOfPulse: ConstantStrings.numberConstant.constantForAnimation.numberOfPulse,
+			radius: UIScreen.main.bounds.width,
+			position: CGPoint(x: UIScreen.main.bounds.width/2, y: UIScreen.main.bounds.height/2),
+			backgroundImage: image
+		)
+		pulse.animationDuration = ConstantStrings.numberConstant.constantForAnimation.animationDuration
+		self.view.layer.insertSublayer(pulse, below: layer)
+		currentPulseLayer = pulse
+	}
+
+	func hideCurrentPulseAnimation() {
+		currentPulseLayer?.removeAllAnimations()
+		currentPulseLayer?.removeFromSuperlayer()
 	}
 }

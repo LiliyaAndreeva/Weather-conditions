@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		72576A292C4A5A7300E3069E /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72576A282C4A5A7300E3069E /* Presenter.swift */; };
 		7279B76B2C48EC1F00FCD989 /* Pulse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7279B76A2C48EC1F00FCD989 /* Pulse.swift */; };
 		72B49CED2C46A04B006EE0EF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B49CEC2C46A04B006EE0EF /* AppDelegate.swift */; };
 		72B49CEF2C46A04B006EE0EF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B49CEE2C46A04B006EE0EF /* SceneDelegate.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		72576A282C4A5A7300E3069E /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		7279B76A2C48EC1F00FCD989 /* Pulse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pulse.swift; sourceTree = "<group>"; };
 		72B49CE92C46A04B006EE0EF /* Weather conditions.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather conditions.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B49CEC2C46A04B006EE0EF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -77,7 +79,7 @@
 			children = (
 				72B49D022C46AA33006EE0EF /* Resources */,
 				72B49D032C46AA4F006EE0EF /* Views */,
-				72B49D012C46AA25006EE0EF /* VIewControllers */,
+				72B49D012C46AA25006EE0EF /* MainVIewController */,
 				72B49D0B2C4797EA006EE0EF /* Models */,
 				7279B7692C48EC0700FCD989 /* Animations */,
 				72B49D122C481CE8006EE0EF /* Extentions */,
@@ -88,12 +90,13 @@
 			path = "Weather conditions";
 			sourceTree = "<group>";
 		};
-		72B49D012C46AA25006EE0EF /* VIewControllers */ = {
+		72B49D012C46AA25006EE0EF /* MainVIewController */ = {
 			isa = PBXGroup;
 			children = (
 				72B49CF02C46A04B006EE0EF /* MainViewController.swift */,
+				72576A282C4A5A7300E3069E /* Presenter.swift */,
 			);
-			path = VIewControllers;
+			path = MainVIewController;
 			sourceTree = "<group>";
 		};
 		72B49D022C46AA33006EE0EF /* Resources */ = {
@@ -215,6 +218,7 @@
 				72B49D112C47D862006EE0EF /* ConstantStrings.swift in Sources */,
 				72B49CF12C46A04B006EE0EF /* MainViewController.swift in Sources */,
 				72B49D082C46D350006EE0EF /* Themes.swift in Sources */,
+				72576A292C4A5A7300E3069E /* Presenter.swift in Sources */,
 				72B49D142C481D01006EE0EF /* Extention + String.swift in Sources */,
 				72B49CED2C46A04B006EE0EF /* AppDelegate.swift in Sources */,
 				72B49D052C46AA6C006EE0EF /* CustomCollectionViewCell.swift in Sources */,

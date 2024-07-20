@@ -6,13 +6,20 @@
 //
 
 import UIKit
+
+/// Пользовательский подкласс CALayer, создающий эффект пульсирующей анимации.
 final class Pulse: CALayer {
 
 	// MARK: - Public properties
+	/// Группа анимации, содержащая анимацию масштаба и непрозрачности.
 	var animationGroup = CAAnimationGroup()
+	/// Начальный масштаб анимации пульса.
 	var initialPulseScale: Float = 0
+	/// Интервал времени ожидания перед запуском следующего импульса.
 	var nextPulseAfter: TimeInterval = 0
+	/// Длительность анимации каждого импульса.
 	var animationDuration: TimeInterval = 0
+	/// Количество импульсов для анимации. По умолчанию бесконечен.
 	var numberOfPulse: Float = Float.infinity
 
 	override init(layer: Any) {
@@ -23,6 +30,12 @@ final class Pulse: CALayer {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	/// Инициализирует новый слой Pulse с указанными параметрами.
+	/// - Параметры:
+	/// - NumberOfPulse: количество импульсов для анимации. По умолчанию бесконечен.
+	/// - радиус: радиус анимации пульса.
+	/// - позиция: позиция импульса в координатном пространстве слоя.
+	/// - BackgroundImage: изображение, которое будет использоваться в качестве фона для пульса.
 	init(
 		numberOfPulse: Float = Float.infinity,
 		radius: CGFloat,
@@ -49,8 +62,9 @@ final class Pulse: CALayer {
 		}
 	}
 
-
 	// MARK: - Private methods
+	/// Создает  анимацию для эффекта пульса.
+	/// — Возвращает: CABasicAnimation, настроенный для масштабирования.
 	private func createScaleAnimation() -> CABasicAnimation {
 		let scaleAnimation = CABasicAnimation(keyPath: ConstantStrings.AnimationKeyPath.transformScaleXY)
 		scaleAnimation.fromValue = initialPulseScale
@@ -60,7 +74,8 @@ final class Pulse: CALayer {
 		return scaleAnimation
 	}
 
-	
+	// Создает анимацию непрозрачности для эффекта пульса.
+	/// — Возвращает: CAKeyframeAnimation, настроенный для изменения непрозрачности.
 	private func createOpacityAnimation() -> CAKeyframeAnimation {
 		let opacityAnimation = CAKeyframeAnimation(keyPath: ConstantStrings.AnimationKeyPath.opacityAnimation)
 		opacityAnimation.duration = animationDuration
@@ -70,6 +85,7 @@ final class Pulse: CALayer {
 		return opacityAnimation
 	}
 
+	/// Устанавливает группу анимации с анимацией масштаба и непрозрачности.
 	private func setupAnimationGroup() {
 		self.animationGroup.duration = animationDuration + nextPulseAfter
 		self.animationGroup.repeatCount = numberOfPulse

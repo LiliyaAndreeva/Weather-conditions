@@ -15,7 +15,7 @@ enum ConstantStrings {
 		static let snow = "Snow".localized()
 		static let rain = "Rain".localized()
 		static let cloudy = "Cloudy".localized()
-		static let rainy = "Raine".localized()
+		static let rainy = "Rainy".localized()
 		static let windy = "Windy".localized()
 		static let storm = "Storm".localized()
 		static let mainlyСloudy = "Gray".localized()

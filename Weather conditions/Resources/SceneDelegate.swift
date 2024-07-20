@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let scene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: scene)
 
-		let viewController = MainViewController()
+		let viewController = assemblyMainScreen()
 		window.rootViewController = viewController
 
 		window.makeKeyAndVisible()
@@ -28,3 +28,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 }
 
+func assemblyMainScreen() -> UIViewController {
+	let viewController = MainViewController()
+	let cellModelProvader = CellModelProviderImpl()
+	let presenter = Presenter(view: viewController, cellModelProvider: cellModelProvader)
+	viewController.presenter = presenter
+	return viewController
+}

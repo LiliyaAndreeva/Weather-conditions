@@ -7,10 +7,16 @@
 
 import UIKit
 
+/// Модель для представления данных ячейки с погодными условиями.
 struct CellModel {
+
+	/// Изображение, представляющее погодные условия.
 	let image: UIImage
+	/// Текстовое описание погодных условий.
 	let text: String
-	
+
+	/// Статический метод для получения массива объектов CellModel.
+	/// - Returns: Массив объектов CellModel, представляющих различные погодные условия.
 	static func fetchCell() -> [CellModel] {
 		let cellItems = [
 			CellModel(
@@ -48,4 +54,18 @@ struct CellModel {
 			]
 		return cellItems
 	}
+}
+
+
+/// Протокол для получения данных моделей ячеек.
+protocol CellModelProvider {
+	/// Метод для получения данных ячеек.
+	/// - Returns: Массив объектов CellModel.
+  func fetchCellData() -> [CellModel]
+}
+
+class CellModelProviderImpl: CellModelProvider {
+  func fetchCellData() -> [CellModel] {
+	return CellModel.fetchCell()
+  }
 }
