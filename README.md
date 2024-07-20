@@ -22,10 +22,10 @@
 
 MVP: Разделение бизнес-логики и пользовательского интерфейса для лучшей поддерживаемости.
 
-Используемые технологии:
-Платформа: iOS 
-Язык программирования: Swift 
-Фреймворк: UIKit 
+Используемые технологии:  
+Платформа: iOS   
+Язык программирования: Swift   
+Фреймворк: UIKit   
 
 ![Main Screen](https://github.com/LiliyaAndreeva/Weather-conditions/blob/main/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202024-07-20%20at%2012.15.38.png)
 ![Main Screen](https://github.com/LiliyaAndreeva/Weather-conditions/blob/main/Simulator%20Screenshot%20-%20iPhone%2015%20Pro%20Max%20-%202024-07-20%20at%2012.15.41.png)
